@@ -6,4 +6,5 @@ Simple Python script to gather kafka Lags, store them to local sqlite db and eve
 Requirements
 ------------
 * [Python 2.7](https://www.python.org/download/releases/2.7/)
-* [pykafka](http://pykafka.readthedocs.io/en/latest/index.html) library is required to run the script
+* [kazoo](https://kazoo.readthedocs.io/en/latest/)
+* [pykafka](http://pykafka.readthedocs.io/en/latest/index.html)
