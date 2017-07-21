@@ -4,11 +4,11 @@ import ConfigParser
 import smtplib
 import sqlite3
 import pykafka
-from pykafka.exceptions import KafkaException
-from kazoo.exceptions import ZookeeperError
 from threading import Thread
 from email.mime.text import MIMEText
 from datetime import datetime, timedelta
+from pykafka.exceptions import KafkaException
+from kazoo.exceptions import ZookeeperError
 from kazoo.client import KazooClient
 
 
@@ -75,8 +75,14 @@ smtp = cp.get(generalSection, "smtp")
 subject = cp.get(generalSection, "subject")
 
 # Connect to sqlite DB
-conn = sqlite3.connect(databaseFile, detect_types=sqlite3.PARSE_DECLTYPES)
-cursor = conn.cursor()
+try:
+    conn = sqlite3.connect(databaseFile, detect_types=sqlite3.PARSE_DECLTYPES)
+    cursor = conn.cursor()
+except sqlite3.Error, e:
+    print "SQLite error"
+    print e.message
+    exit(1)
+
 # Check if table exist in DB
 if len(cursor.execute('''SELECT name FROM sqlite_master WHERE type='table' and name='lag' ''').fetchall()) != 1:
     cursor.execute('''CREATE TABLE lag
